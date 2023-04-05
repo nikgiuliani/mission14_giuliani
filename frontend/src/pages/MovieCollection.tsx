@@ -4,6 +4,7 @@ import '../assets/bootstrap.min.css';
 
 const MovieCollection = () => {
   const [movieData, setMovieData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     GetData();
@@ -19,11 +20,18 @@ const MovieCollection = () => {
       headers: headers,
     })
       .then((response) => response.json())
-      .then((json) => setMovieData(json))
+      .then((json) => {
+        setLoading(false);
+        setMovieData(json);
+      })
       .catch((error) => console.log('Authorization failed : ' + error.message));
   }
 
-  return (
+  return loading ? (
+    <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+      <h1> Loading </h1>
+    </div>
+  ) : (
     <div>
       <table className="table table-bordered table-striped">
         <thead className="font-weight-bold ">
